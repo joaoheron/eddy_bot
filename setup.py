@@ -33,7 +33,7 @@ setup(
     description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
     entry_points={
         'console_scripts': [
-            'eddy_bot=eddy_bot.cli:main',
+            'eddy_bot=eddy_bot.cli:cli',
         ],
     },
     install_requires=requirements,
