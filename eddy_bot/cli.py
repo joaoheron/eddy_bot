@@ -3,7 +3,7 @@ import os
 import sys
 import click
 
-from eddy_bot.crawlers.instagram.selenium_crawler import get_data
+from eddy_bot.crawlers.instagram.instagram_bot import InstagramSeleniumBot
 
 
 @click.group()
@@ -17,7 +17,9 @@ def instagram(action):
         Build decision tree.
     """
     try:
-        get_data()
+        bot = InstagramSeleniumBot()
+        bot.login()
+        bot.comment()
     except Exception as e:
         raise e
 
