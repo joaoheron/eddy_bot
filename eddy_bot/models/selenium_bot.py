@@ -1,6 +1,10 @@
+import time
+from random import randint, choice
+
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
 
 import eddy_bot.vars as vr 
 
@@ -30,18 +34,7 @@ class SeleniumBot():
 
     # Drivers building
 
-    def build_chrome_driver(self, timeout=30):
-        """This method builds options for Chrome Driver.
-
-        :param headless: Indicates if the driver will be headless (hidden).
-        :type headless: str
-        """
-        print('Building Chrome Driver...')
-        self.driver = webdriver.Chrome(chrome_options=self._build_chrome_options(), executable_path=vr.chromedriver_path)
-        self.driver.set_window_size(500, 950)
-        return self.driver
-
-    def build_firefox_driver(self, timeout=30):
+    def build_firefox_driver(self, timeout=30, mobile=True):
         """This method builds options for Mozille Firefox Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
@@ -52,6 +45,17 @@ class SeleniumBot():
         profile = webdriver.FirefoxProfile()
         profile.set_preference("general.useragent.override", user_agent)
         self.driver = webdriver.Firefox(profile, executable_path=vr.geckodriver_path)
+        self.driver.set_window_size(500, 950)
+        return self.driver
+
+    def build_chrome_driver(self, timeout=30, mobile=True):
+        """This method builds options for Chrome Driver.
+
+        :param headless: Indicates if the driver will be headless (hidden).
+        :type headless: str
+        """
+        print('Building Chrome Driver...')
+        self.driver = webdriver.Chrome(chrome_options=self._build_chrome_options(), executable_path=vr.chromedriver_path)
         self.driver.set_window_size(500, 950)
         return self.driver
 
@@ -77,3 +81,20 @@ class SeleniumBot():
         chrome_options.add_argument('--disable-software-rasterizer')
         chrome_options.add_argument('--headless=' + str(headless))
         return chrome_options
+
+    # Common Webdriver Methods
+
+    def check_exists_by_xpath(self, xpath):
+        try:
+            self.driver.find_element_by_xpath(xpath)
+        except NoSuchElementException:
+            return True
+
+        return False
+
+    def pick_random_comment(self):
+        comment = choice(self.comments)
+        return comment
+
+    def wait(self):
+        time.sleep(randint(2, 3))
