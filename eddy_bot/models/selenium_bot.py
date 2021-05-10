@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
-import eddy_bot.vars
+import eddy_bot.vars as vr 
 
 
 class SeleniumBot():
@@ -10,40 +10,23 @@ class SeleniumBot():
     def __init__(self, browser='firefox', mobile=False):
         self.browser = browser
         self.username, self.password = self.get_credentials()
-        self.tags = self.get_resource(vars.tags_path)
-        self.profiles = sself.get_resource(vars.profiles_path)
-        self.comments = self.get_resource(vars.comments_path)
+        self.tags = self.get_resource(vr.tags_path)
+        self.profiles = self.get_resource(vr.profiles_path)
+        self.comments = self.get_resource(vr.comments_path)
         self.driver = (self.build_firefox_driver() if browser == 'firefox' else self.build_chrome_driver())
 
-        #     self.build_firefox_driver()
-        # else:
-        #     self.build_chrome_driver()
-
-    # Getting information
-    # def get_tags():
-    #     with open(vars.tags_path, 'r') as f:
-    #         tagsl = [line.strip() for line in f]
-    #     return tagsl
-
-    # def get_profiles():
-    #     with open(vars.profiles_path, 'r') as f:
-    #         profiles = [line.strip() for line in f]
-    #     return profiles
-
-    # def get_comments():
-    #     with open(vars.profiles_path, 'r') as f:
-    #         profiles = [line.strip() for line in f]
-    #     return profiles
-
     def get_credentials(self):
-        with open(vars.credentials_path, 'r') as f:
+        with open(vr.credentials_path, 'r') as f:
             tagsl = [line.strip() for line in f]
         return tagsl[0], tagsl[1]
         
     def get_resource(self, path):
         with open(path, 'r') as f:
             resources = [line.strip() for line in f]
-        return tagsl[0], tagsl[1]
+        return resources
+
+    def exit(self):
+        self.driver.quit()
 
     # Drivers building
 
@@ -54,7 +37,7 @@ class SeleniumBot():
         :type headless: str
         """
         print('Building Chrome Driver...')
-        self.driver = webdriver.Chrome(chrome_options=self._build_chrome_options(), executable_path=vars.chromedriver_path)
+        self.driver = webdriver.Chrome(chrome_options=self._build_chrome_options(), executable_path=vr.chromedriver_path)
         self.driver.set_window_size(500, 950)
         return self.driver
 
@@ -68,9 +51,9 @@ class SeleniumBot():
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
         profile = webdriver.FirefoxProfile()
         profile.set_preference("general.useragent.override", user_agent)
-        self.driver = webdriver.Firefox(profile, executable_path=vars.geckodriver_path)
+        self.driver = webdriver.Firefox(profile, executable_path=vr.geckodriver_path)
         self.driver.set_window_size(500, 950)
-        return self.drive
+        return self.driver
 
     def _build_chrome_options(self, headless=True):
         """This method builds options for Chrome Driver.
@@ -84,7 +67,7 @@ class SeleniumBot():
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--verbose')
         chrome_options.add_experimental_option("prefs", {
-                "download.default_directory": 'vars.download',
+                "download.default_directory": f'{var.download_dir}',
                 "download.prompt_for_download": False,
                 "download.directory_upgrade": True,
                 "safebrowsing_for_trusted_sources_enabled": False,
@@ -92,10 +75,5 @@ class SeleniumBot():
         })
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--disable-software-rasterizer')
-        # chrome_options.add_argument('--headless=' + str(headless))
+        chrome_options.add_argument('--headless=' + str(headless))
         return chrome_options
-
-
-    def exit(self):
-        self.driver.quit
-
