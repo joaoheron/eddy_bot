@@ -40,7 +40,7 @@ class InstagramSeleniumBot(SeleniumBot):
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[6]/button').click()
         self.wait()
 
-    def comment(self):
+    def comment_profiles_posts(self, n_posts=3):
         # Iterate over all instagram profiles stored on vars.profile_path
         for profile in self.profiles:
             comment = self.pick_random_comment()
@@ -49,7 +49,7 @@ class InstagramSeleniumBot(SeleniumBot):
             self.driver.implicitly_wait(1)
 
             self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
-            posts_xpaths = self.get_top_posts()
+            posts_xpaths = self.get_top_posts(n_posts)
 
             for xp in posts_xpaths:
                 self.wait()
@@ -87,9 +87,9 @@ class InstagramSeleniumBot(SeleniumBot):
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
 
-    def get_top_posts(self, n=3):
+    def get_top_posts(self, n_posts=3):
         base_top_posts = '/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div'
         posts = []
-        for i in range(n):
+        for i in range(n_posts):
             posts.append(f'{base_top_posts}[{str(i + 1)}]/a/div/div[2]')
         return posts

@@ -19,7 +19,7 @@ def instagram(action):
     try:
         bot = InstagramSeleniumBot()
         bot.login()
-        bot.comment()
+        bot.comment_profiles_posts()
     except Exception as e:
         raise e
 
