@@ -1,0 +1,8 @@
+source: source(agg_purchases)
+fields:
+  supplier_id:
+    field_type: dimension
+    name: "ID Fornecedor"
+    source: agg_purchases."supplier_id"
+    type: string
+    hide: true
