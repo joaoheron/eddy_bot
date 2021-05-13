@@ -11,8 +11,8 @@ from eddy_bot.models.social_media_bot import SocialMediaBot
 
 class SeleniumBot(SocialMediaBot):
 
-    def __init__(self, browser='firefox', mobile=False, credentials_path=vr.tags_path, tags_path=vr.tags_path, profiles_path=vr.profiles_path, comments_path=vr.comments_pat):
-        SocialMediaBot.__init__(self, credentials_path, tags_path, profiles_path, comments_path)
+    def __init__(self, browser='firefox', mobile=False, **kwargs):
+        SocialMediaBot.__init__(self, kwargs)
         self.browser = browser
         self.driver = (self.build_firefox_driver() if browser == 'firefox' else self.build_chrome_driver())
 

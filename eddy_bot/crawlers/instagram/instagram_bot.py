@@ -5,13 +5,28 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
 from eddy_bot.models.selenium_bot import SeleniumBot
+from eddy_bot.utils import pick_random_resource
 
 
 class InstagramSeleniumBot(SeleniumBot):
 
-    def __init__(self, browser='firefox', mobile=False):
-        SeleniumBot.__init__(self, browser, mobile)
+    def __init__(self, **kwargs):
+        SeleniumBot.__init__(self, kwargs)
         self.base_url = 'https://instagram.com/'
+
+    # def like_tag_post()
+    # def like_profile_post()
+    # def like_post()
+
+    # def comment_profile_post(like=True) # profile no singular
+    # def comment_tag(like=True)
+    # def comment_post()
+
+    # def follow_profile
+    # def follow_profile_followers(n_followers)
+    # def follow_profile_following(n_following)
+    
+    # def send_message_to_profile()
 
     def login(self):
         self.driver.get(self.base_url)
@@ -41,15 +56,18 @@ class InstagramSeleniumBot(SeleniumBot):
         self.wait()
 
     def comment_profiles_posts(self, n_posts=3):
+        """
+
+        """
         # Iterate over all instagram profiles stored on vars.profile_path
         for profile in self.profiles:
-            comment = self.pick_random_comment()
+            comment = pick_random_resource(self.comments)
 
             self.driver.get(self.base_url + profile)
             self.driver.implicitly_wait(1)
 
             self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
-            posts_xpaths = self.get_top_posts(n_posts)
+            posts_xpaths = self.get_top_profiles_posts(n_posts)
 
             for xp in posts_xpaths:
                 self.wait()
@@ -87,7 +105,7 @@ class InstagramSeleniumBot(SeleniumBot):
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
 
-    def get_top_posts(self, n_posts=3):
+    def get_top_profiles_posts(self, n_posts=3):
         base_top_posts = '/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div'
         posts = []
         for i in range(n_posts):
