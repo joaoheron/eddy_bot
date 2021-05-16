@@ -2,6 +2,7 @@
 import os
 import sys
 import click
+import eddy_bot.vars as vr
 
 from eddy_bot.crawlers.instagram.instagram_bot import InstagramSeleniumBot
 
@@ -12,12 +13,14 @@ def cli():
 
 @click.command()
 @click.option('--action', '-a', default='comment', help='Action to be executed over this social media', required=True)
-def instagram(action):
+@click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Configuration file path', required=False)
+@click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
+def instagram(action, credentials_path, config_path):
     """
         Build decision tree.
     """
     try:
-        bot = InstagramSeleniumBot()
+        bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path)
         bot.login()
         bot.comment_profiles_posts()
     except Exception as e:
