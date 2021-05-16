@@ -1,3 +1,5 @@
+from random import randint
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
@@ -7,11 +9,14 @@ from selenium.webdriver.common.keys import Keys
 from eddy_bot.models.selenium_bot import SeleniumBot
 from eddy_bot.utils import pick_random_resource
 
-
 class InstagramSeleniumBot(SeleniumBot):
+    possible_base_profile_top_posts = [
+        '/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div',
+        '/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div'
+    ]
 
-    def __init__(self, **kwargs):
-        SeleniumBot.__init__(self, kwargs)
+    def __init__(self, credentials_path, config_path):
+        SeleniumBot.__init__(self, credentials_path, config_path)
         self.base_url = 'https://instagram.com/'
 
     # def like_tag_post()
@@ -30,7 +35,7 @@ class InstagramSeleniumBot(SeleniumBot):
 
     def login(self):
         self.driver.get(self.base_url)
-        self.wait()
+        self.driver.implicitly_wait(randint(1,2))
 
         if self.check_exists_by_xpath("//button[text()='Accept']"):
             print("No cookies")
@@ -38,10 +43,10 @@ class InstagramSeleniumBot(SeleniumBot):
             self.driver.find_element_by_xpath("//button[text()='Accept']").click()
             print("Accepted cookies")
 
-        self.wait()
+        self.driver.implicitly_wait(randint(1,2))
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/div[3]/button[1]').click()
         print("Logging in...")
-        self.wait()
+        self.driver.implicitly_wait(randint(1,2))
         username_field = self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[3]/div/label/input')
         username_field.send_keys(self.username)
 
@@ -53,36 +58,45 @@ class InstagramSeleniumBot(SeleniumBot):
         pass_field.send_keys(self.password)
 
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[6]/button').click()
-        self.wait()
-
+        self.driver.implicitly_wait(randint(1,2))
+    
     def comment_profiles_posts(self, n_posts=3):
         """
-
         """
-        # Iterate over all instagram profiles stored on vars.profile_path
+        possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths(n_posts)
+
         for profile in self.profiles:
-            comment = pick_random_resource(self.comments)
+            comment = pick_random_resource(self.comments, self.config.get('comments'))
 
             self.driver.get(self.base_url + profile)
             self.driver.implicitly_wait(1)
-
             self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
-            posts_xpaths = self.get_top_profiles_posts(n_posts)
 
-            for xp in posts_xpaths:
-                self.wait()
+            for possibles_xpaths in possible_profile_top_posts_xpaths:
+                self._comment_profile_post(profile, possibles_xpaths, comment)
 
-                find_post_div = (By.XPATH, xp)
-                WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(find_post_div))
-                self.driver.find_element_by_xpath(xp).click()
+
+    def _comment_profile_post(self, profile, possibles_xpaths, comment):
+        """
+
+        """
+        self.driver.implicitly_wait(randint(1,2))
+        for xp in possibles_xpaths:
+            try:
+                # WebDriverWait(self.driver, randint(3, 5)).until(EC.presence_of_element_located((By.XPATH, xp))) # Tuple (XPATH, xp)
+                ele = self.driver.find_element_by_xpath(xp)
+                if ele is None:
+                    break
+                
+                ele.click()
 
                 # Click to comment
-                self.wait()
+                self.driver.implicitly_wait(1)
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 600)")
                 find_comments_button = (By.XPATH, '/html/body/div[1]/section/main/div/div/article/div[3]/section[1]/span[2]/button')
-                WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(find_comments_button))
+                WebDriverWait(self.driver, randint(3, 5)).until(EC.presence_of_element_located(find_comments_button))
                 comments_button = self.driver.find_element(*find_comments_button)
-                WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(find_comments_button))
+                WebDriverWait(self.driver, randint(3, 5)).until(EC.element_to_be_clickable(find_comments_button))
                 comments_button.click()
 
                 # Write comment
@@ -98,16 +112,22 @@ class InstagramSeleniumBot(SeleniumBot):
                 post_button = self.driver.find_element(*find_post_button)
                 WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(find_post_button))
                 post_button.click()
-                self.wait()
+                self.driver.implicitly_wait(randint(1,2))
 
                 self.driver.get(self.base_url + profile)
                 self.driver.implicitly_wait(1)
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
+            except Exception as ex:
+                raise ex
 
+    def get_possible_profile_top_posts_xpaths(self, n_posts=3):
+        possible_profile_top_posts_xpaths = [] # List of lists
+        for j in range(n_posts):
 
-    def get_top_profiles_posts(self, n_posts=3):
-        base_top_posts = '/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div'
-        posts = []
-        for i in range(n_posts):
-            posts.append(f'{base_top_posts}[{str(i + 1)}]/a/div/div[2]')
-        return posts
+            posts_xpaths = []
+            for xpath in InstagramSeleniumBot.possible_base_profile_top_posts:
+                posts_xpaths.append(f'{xpath}[{str(j + 1)}]/a/div/div[2]')
+
+            possible_profile_top_posts_xpaths.append(posts_xpaths)
+            
+        return possible_profile_top_posts_xpaths

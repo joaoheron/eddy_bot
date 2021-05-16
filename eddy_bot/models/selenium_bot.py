@@ -7,21 +7,21 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 
 from eddy_bot.models.social_media_bot import SocialMediaBot
+import eddy_bot.vars as vr
 
 
 class SeleniumBot(SocialMediaBot):
 
-    def __init__(self, browser='firefox', mobile=False, **kwargs):
-        SocialMediaBot.__init__(self, kwargs)
-        self.browser = browser
-        self.driver = (self.build_firefox_driver() if browser == 'firefox' else self.build_chrome_driver())
+    def __init__(self, credentials_path, config_path, browser='firefox', mobile=True, headless=False, timeout=30):
+        SocialMediaBot.__init__(self, credentials_path, config_path)
+        self.driver = (self.build_firefox_driver(mobile, headless, timeout) if browser == 'firefox' else self.build_chrome_driver(mobile, headless, timeout))
 
     def exit(self):
         self.driver.quit()
 
     # Drivers building
 
-    def build_firefox_driver(self, timeout=30, mobile=True):
+    def build_firefox_driver(self, mobile=True, headless=True, timeout=30):
         """This method builds options for Mozille Firefox Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
@@ -35,7 +35,7 @@ class SeleniumBot(SocialMediaBot):
         driver.set_window_size(500, 950)
         return driver
 
-    def build_chrome_driver(self, timeout=30, mobile=True):
+    def build_chrome_driver(self, mobile=True, headless=True, timeout=30):
         """This method builds options for Chrome Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
@@ -46,7 +46,7 @@ class SeleniumBot(SocialMediaBot):
         driver.set_window_size(500, 950)
         return driver
 
-    def _build_chrome_options(self, headless=True):
+    def _build_chrome_options(self, headless=True, download_dir=vr.download_dir):
         """This method builds options for Chrome Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
@@ -58,7 +58,7 @@ class SeleniumBot(SocialMediaBot):
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--verbose')
         chrome_options.add_experimental_option("prefs", {
-                "download.default_directory": f'{var.download_dir}',
+                "download.default_directory": f'{download_dir}',
                 "download.prompt_for_download": False,
                 "download.directory_upgrade": True,
                 "safebrowsing_for_trusted_sources_enabled": False,
@@ -80,4 +80,4 @@ class SeleniumBot(SocialMediaBot):
         return False
 
     def wait(self):
-        time.sleep(randint(2, 3))
+        time.sleep(randint(1, 100) * 0.01 + 1)
