@@ -13,7 +13,7 @@ def cli():
 
 @click.command()
 @click.option('--action', '-a', default='comment', help='Action to be executed over this social media', required=True)
-@click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Configuration file path', required=False)
+@click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
 def instagram(action, credentials_path, config_path):
     """
