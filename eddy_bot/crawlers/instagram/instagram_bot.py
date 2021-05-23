@@ -16,6 +16,8 @@ class InstagramSeleniumBot(SeleniumBot):
         '/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div'
     ]
     comments_button = '/html/body/div[1]/section/main/div/div/article/div[3]/section[1]/span[2]/button'
+    comment_box = '/html/body/div[1]/section/main/section/div/form/textarea'
+    post_button = '/html/body/div[1]/section/main/section/div/form/button'
 
     def __init__(self, credentials_path, config_path):
         SeleniumBot.__init__(self, credentials_path, config_path)
@@ -83,45 +85,34 @@ class InstagramSeleniumBot(SeleniumBot):
         self.driver.implicitly_wait(randint(1,2))
         for xp in possibles_xpaths:
             try:
-                # WebDriverWait(self.driver, randint(3, 5)).until(EC.presence_of_element_located((By.XPATH, xp))) # Tuple (XPATH, xp)
                 ele = self.driver.find_element_by_xpath(xp)
                 if ele is None:
                     continue
                 
                 ele.click()
-                self.driver.implicitly_wait(1)
+                self.driver.implicitly_wait(randint(1,2))
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 600)")
 
                 # Click to comment
-                find_comments_button = (By.XPATH, InstagramSeleniumBot.comments_button)
-                WebDriverWait(self.driver, randint(3, 5)).until(EC.presence_of_element_located(find_comments_button))
-                comments_button = self.driver.find_element_by_xpath(xp)
+                comments_button = self.driver.find_element_by_xpath(InstagramSeleniumBot.comments_button)
                 comments_button.click()
 
                 # Write comment
-                find_comment_box = (By.XPATH, '/html/body/div[1]/section/main/section/div/form/textarea')
-                WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(find_comment_box))
-                comment_box = self.driver.find_element(*find_comment_box)
-                WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(find_comment_box))
-
+                comment_box = self.driver.find_element_by_xpath(InstagramSeleniumBot.comment_box)
                 comment_box.send_keys(comment)
 
                 # Post comment
-                find_post_button = (By.XPATH, '/html/body/div[1]/section/main/section/div/form/button')
-                WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(find_post_button))
-                post_button = self.driver.find_element(*find_post_button)
-                WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(find_post_button))
+                post_button = self.driver.find_element_by_xpath(InstagramSeleniumBot.post_button)
                 post_button.click()
                 self.driver.implicitly_wait(randint(1,2))
 
                 self.driver.get(self.base_url + profile)
-                self.driver.implicitly_wait(1)
+                self.driver.implicitly_wait(randint(1,2))
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
                 break
             except Exception as ex:
                 continue
-                # raise ex
 
     def get_possible_profile_top_posts_xpaths(self, n_posts=3):
         possible_profile_top_posts_xpaths = [] # List of lists
