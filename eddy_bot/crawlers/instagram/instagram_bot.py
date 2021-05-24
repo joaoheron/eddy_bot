@@ -10,18 +10,19 @@ from eddy_bot.models.selenium_bot import SeleniumBot
 from eddy_bot.utils import pick_random_resource
 
 class InstagramSeleniumBot(SeleniumBot):
+    button_text_accept = "//button[text()='Accept']"
     possible_base_profile_top_posts = [
-        '/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div',
-        '/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[1]/div',
-        '/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div'
+        "/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div",
+        "/html/body/div[1]/section/main/div/div[3]/article/div[1]/div/div[1]/div",
+        "/html/body/div[1]/section/main/div/div[4]/article/div[1]/div/div[1]/div"
     ]
-    comments_button = '/html/body/div[1]/section/main/div/div/article/div[3]/section[1]/span[2]/button'
-    comment_box = '/html/body/div[1]/section/main/section/div/form/textarea'
-    post_button = '/html/body/div[1]/section/main/section/div/form/button'
+    comments_button = "/html/body/div[1]/section/main/div/div/article/div[3]/section[1]/span[2]/button"
+    comment_box = "/html/body/div[1]/section/main/section/div/form/textarea"
+    post_button = "/html/body/div[1]/section/main/section/div/form/button"
 
     def __init__(self, credentials_path, config_path):
         SeleniumBot.__init__(self, credentials_path, config_path)
-        self.base_url = 'https://instagram.com/'
+        self.base_url = "https://instagram.com/"
 
     # def like_tag_post()
     # def like_profile_post()
@@ -39,18 +40,18 @@ class InstagramSeleniumBot(SeleniumBot):
 
     def login(self):
         self.driver.get(self.base_url)
-        self.driver.implicitly_wait(randint(1,2))
+        self.driver.implicitly_wait(randint(1, 2))
 
-        if self.check_exists_by_xpath("//button[text()='Accept']"):
+        if self.check_exists_by_xpath(InstagramSeleniumBot.button_text_accept):
             print("No cookies")
         else:
-            self.driver.find_element_by_xpath("//button[text()='Accept']").click()
+            self.driver.find_element_by_xpath(InstagramSeleniumBot.button_text_accept).click()
             print("Accepted cookies")
 
-        self.driver.implicitly_wait(randint(1,2))
+        self.driver.implicitly_wait(randint(1, 2))
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/div[3]/button[1]').click()
         print("Logging in...")
-        self.driver.implicitly_wait(randint(1,2))
+        self.driver.implicitly_wait(randint(1, 2))
         username_field = self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[3]/div/label/input')
         username_field.send_keys(self.username)
 
@@ -62,7 +63,7 @@ class InstagramSeleniumBot(SeleniumBot):
         pass_field.send_keys(self.password)
 
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[6]/button').click()
-        self.driver.implicitly_wait(randint(1,2))
+        self.driver.implicitly_wait(randint(1, 2))
     
     def comment_profiles_posts(self, n_posts=3):
         """
@@ -82,7 +83,7 @@ class InstagramSeleniumBot(SeleniumBot):
     def _comment_profile_post(self, profile, possibles_xpaths, comment):
         """
         """
-        self.driver.implicitly_wait(randint(1,2))
+        self.driver.implicitly_wait(randint(1, 2))
         for xp in possibles_xpaths:
             try:
                 ele = self.driver.find_element_by_xpath(xp)
@@ -90,7 +91,7 @@ class InstagramSeleniumBot(SeleniumBot):
                     continue
                 
                 ele.click()
-                self.driver.implicitly_wait(randint(1,2))
+                self.driver.implicitly_wait(randint(1, 2))
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 600)")
 
                 # Click to comment
@@ -104,10 +105,10 @@ class InstagramSeleniumBot(SeleniumBot):
                 # Post comment
                 post_button = self.driver.find_element_by_xpath(InstagramSeleniumBot.post_button)
                 post_button.click()
-                self.driver.implicitly_wait(randint(1,2))
+                self.driver.implicitly_wait(randint(1, 2))
 
                 self.driver.get(self.base_url + profile)
-                self.driver.implicitly_wait(randint(1,2))
+                self.driver.implicitly_wait(randint(1, 2))
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
                 break

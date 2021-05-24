@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+
 from eddy_bot.utils import get_resource, get_credentials, get_yaml
 
 class SocialMediaBot():
@@ -9,3 +11,4 @@ class SocialMediaBot():
         self.tags = self.config.get('tags')
         self.profiles = self.config.get('profiles')
         self.comments = self.config.get('comments')
+        load_dotenv()
