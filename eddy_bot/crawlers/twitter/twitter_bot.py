@@ -23,8 +23,9 @@ class TwitterBot(SocialMediaBot):
         try:
             self.api.verify_credentials()
             print("Authentication OK.")
-        except:
+        except Exception as ex:
             print("Error during authentication.")
+            raise ex
 
     def tweet(self, tweet=None):
         self.verify_credentials()
