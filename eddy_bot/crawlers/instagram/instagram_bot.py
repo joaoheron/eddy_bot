@@ -71,7 +71,7 @@ class InstagramSeleniumBot(SeleniumBot):
         possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths(n_posts)
 
         for profile in self.profiles:
-            comment = pick_random_resource(self.comments, self.config.get('comments'))
+            comment = pick_random_resource(self.comments)
 
             self.driver.get(self.base_url + profile)
             self.driver.implicitly_wait(1)

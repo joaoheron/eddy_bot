@@ -3,8 +3,7 @@ from os import getenv
 import tweepy
 
 from eddy_bot.models.social_media_bot import SocialMediaBot
-import eddy_bot.vars as vr
-
+from eddy_bot.utils import pick_random_resource
 
 class TwitterBot(SocialMediaBot):
 
@@ -19,10 +18,19 @@ class TwitterBot(SocialMediaBot):
             getenv('ACCESS_TOKEN_SECRET')
         )
         self.api = tweepy.API(self.auth)
-        
-    def tweet():
+
+    def verify_credentials(self):
         try:
-            api.verify_credentials()
-            print("Authentication OK")
+            self.api.verify_credentials()
+            print("Authentication OK.")
         except:
-            print("Error during authentication")
+            print("Error during authentication.")
+
+    def tweet(self, tweet=None):
+        self.verify_credentials()
+        try:
+            if tweet is None:
+                tweet = pick_random_resource(self.comments)
+            self.api.update_status(tweet)
+        except Exception as ex:
+            raise ex

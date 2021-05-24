@@ -16,6 +16,6 @@ def get_yaml(path):
         obj = load(yaml_file, Loader=FullLoader)
         return obj
 
-def pick_random_resource(self, resource):
-    res = choice(resource)
+def pick_random_resource(resources):
+    res = choice(resources)
     return res

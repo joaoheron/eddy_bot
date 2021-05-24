@@ -36,7 +36,6 @@ def twitter(action, credentials_path, config_path):
     """
     try:
         bot = TwitterBot(credentials_path=credentials_path, config_path=config_path)
-        bot.login()
         bot.tweet()
     except Exception as e:
         raise e
