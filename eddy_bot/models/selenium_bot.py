@@ -6,35 +6,22 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 
-import eddy_bot.vars as vr 
+from eddy_bot.models.social_media_bot import SocialMediaBot
+import eddy_bot.vars as vr
 
 
-class SeleniumBot():
+class SeleniumBot(SocialMediaBot):
 
-    def __init__(self, browser='firefox', mobile=False):
-        self.browser = browser
-        self.username, self.password = self.get_credentials()
-        self.tags = self.get_resource(vr.tags_path)
-        self.profiles = self.get_resource(vr.profiles_path)
-        self.comments = self.get_resource(vr.comments_path)
-        self.driver = (self.build_firefox_driver() if browser == 'firefox' else self.build_chrome_driver())
-
-    def get_credentials(self):
-        with open(vr.credentials_path, 'r') as f:
-            tagsl = [line.strip() for line in f]
-        return tagsl[0], tagsl[1]
-        
-    def get_resource(self, path):
-        with open(path, 'r') as f:
-            resources = [line.strip() for line in f]
-        return resources
+    def __init__(self, credentials_path, config_path, browser='firefox', mobile=True, headless=False, timeout=30):
+        SocialMediaBot.__init__(self, credentials_path, config_path)
+        self.driver = (self.build_firefox_driver(mobile, headless, timeout) if browser == 'firefox' else self.build_chrome_driver(mobile, headless, timeout))
 
     def exit(self):
         self.driver.quit()
 
     # Drivers building
 
-    def build_firefox_driver(self, timeout=30, mobile=True):
+    def build_firefox_driver(self, mobile=True, headless=True, timeout=30):
         """This method builds options for Mozille Firefox Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
@@ -44,22 +31,22 @@ class SeleniumBot():
         user_agent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"
         profile = webdriver.FirefoxProfile()
         profile.set_preference("general.useragent.override", user_agent)
-        self.driver = webdriver.Firefox(profile, executable_path=vr.geckodriver_path)
-        self.driver.set_window_size(500, 950)
-        return self.driver
+        driver = webdriver.Firefox(profile, executable_path=vr.geckodriver_path)
+        driver.set_window_size(500, 950)
+        return driver
 
-    def build_chrome_driver(self, timeout=30, mobile=True):
+    def build_chrome_driver(self, mobile=True, headless=True, timeout=30):
         """This method builds options for Chrome Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
         :type headless: str
         """
         print('Building Chrome Driver...')
-        self.driver = webdriver.Chrome(chrome_options=self._build_chrome_options(), executable_path=vr.chromedriver_path)
-        self.driver.set_window_size(500, 950)
-        return self.driver
+        driver = webdriver.Chrome(chrome_options=self._build_chrome_options(), executable_path=vr.chromedriver_path)
+        driver.set_window_size(500, 950)
+        return driver
 
-    def _build_chrome_options(self, headless=True):
+    def _build_chrome_options(self, headless=True, download_dir=vr.download_dir):
         """This method builds options for Chrome Driver.
 
         :param headless: Indicates if the driver will be headless (hidden).
@@ -71,7 +58,7 @@ class SeleniumBot():
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--verbose')
         chrome_options.add_experimental_option("prefs", {
-                "download.default_directory": f'{var.download_dir}',
+                "download.default_directory": f'{download_dir}',
                 "download.prompt_for_download": False,
                 "download.directory_upgrade": True,
                 "safebrowsing_for_trusted_sources_enabled": False,
@@ -92,9 +79,5 @@ class SeleniumBot():
 
         return False
 
-    def pick_random_comment(self):
-        comment = choice(self.comments)
-        return comment
-
     def wait(self):
-        time.sleep(randint(2, 3))
+        time.sleep(randint(1, 100) * 0.01 + 1)
