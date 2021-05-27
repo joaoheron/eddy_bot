@@ -11,3 +11,4 @@ Click==7.0
 selenium==3.141.0
 tweepy==3.10.0
 python-dotenv-0.17.1
+flake8==3.7.8
