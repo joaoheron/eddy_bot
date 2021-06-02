@@ -25,29 +25,31 @@ Eddy Bot is a cli command to interact with social media. Currently supports Inst
 Features
 --------
 
-* Instagram 
+Instagram 
+**********************
 
 * Comment profile post:
-``
+```
 eddy_bot instagram comment "Profile to comment on post"
-``
+```
 
 * Follow profile:
-``
+```
 eddy_bot instagram "Profile to follow"
-``
+```
 
-* Twitter
+Twitter
+**********************
 
 * Tweet message:
-``
+```
 eddy_bot tweet "Your message"
-``
+```
 
 * Follow profile:
-``
+```
 eddy_bot twitter follow "Profile to follow"
-``
+```
 
 Configuring
 --------
