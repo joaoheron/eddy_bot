@@ -16,7 +16,7 @@ Eddy Bot
 
 
 
-Eddy Bot is a cli command to interact with social media. Currently supports Instagram and Twitter.
+Eddy Bot is a command line interface to interact with social media. Currently supports Instagram and Twitter.
 
 
 * Free software: Apache Software License 2.0
