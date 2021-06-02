@@ -78,9 +78,9 @@ class InstagramSeleniumBot(SeleniumBot):
             self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
             for possibles_xpaths in self.possible_profile_top_posts_xpaths:
-                self._comment_profile_post(profile, possibles_xpaths, comment)
+                self.comment_profile_post(profile, possibles_xpaths, comment)
 
-    def _comment_profile_post(self, profile, possibles_xpaths, comment):
+    def comment_profile_post(self, profile, possibles_xpaths, comment):
         """
         """
         self.driver.implicitly_wait(randint(1, 2))
@@ -114,6 +114,9 @@ class InstagramSeleniumBot(SeleniumBot):
                 break
             except Exception as ex:
                 continue
+
+    def follow():
+        print('on progress')
 
     def get_possible_profile_top_posts_xpaths(self, n_posts=1):
         possible_profile_top_posts_xpaths = [] # List of lists

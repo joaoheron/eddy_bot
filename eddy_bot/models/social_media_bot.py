@@ -12,4 +12,3 @@ class SocialMediaBot():
         self.profiles = self.config.get('profiles')
         self.comments = self.config.get('comments')
         self.descriptions = self.config.get('descriptions')
-        load_dotenv()

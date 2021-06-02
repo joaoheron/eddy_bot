@@ -26,7 +26,7 @@ def instagram(comment, profile, credentials_path, config_path):
         if comment is not None:
             bot.comment_profiles_posts()
         if follow is not None:
-            bot.follow_profile(profile)
+            bot.follow(profile)
     except Exception as e:
         raise e
 
