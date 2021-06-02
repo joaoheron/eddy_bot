@@ -16,17 +16,38 @@ Eddy Bot
 
 
 
-Python Boilerplate contains all the boilerplate you need to create a Python package.
+Eddy Bot is a cli command to interact with social media. Currently supports Instagram and Twitter.
 
 
 * Free software: Apache Software License 2.0
 * Documentation: https://eddy-bot.readthedocs.io.
 
-
 Features
 --------
 
-* TODO
+* Instagram 
 
-Credits
--------
+* Comment profile post:
+``
+eddy_bot instagram comment "Profile to comment on post"
+``
+
+* Follow profile:
+``
+eddy_bot instagram "Profile to follow"
+``
+
+* Twitter
+
+* Tweet message:
+``
+eddy_bot tweet "Your message"
+``
+
+* Follow profile:
+``
+eddy_bot twitter follow "Profile to follow"
+``
+
+Configuring
+--------
