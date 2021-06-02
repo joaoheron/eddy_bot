@@ -23,7 +23,9 @@ class InstagramSeleniumBot(SeleniumBot):
     def __init__(self, credentials_path, config_path):
         SeleniumBot.__init__(self, credentials_path, config_path)
         self.base_url = "https://instagram.com/"
+        self.possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths()
 
+    # TODO
     # def like_tag_post()
     # def like_profile_post()
     # def like_post()
@@ -68,8 +70,6 @@ class InstagramSeleniumBot(SeleniumBot):
     def comment_profiles_posts(self, n_posts=3):
         """
         """
-        possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths(n_posts)
-
         for profile in self.profiles:
             comment = pick_random_resource(self.comments)
 
@@ -77,10 +77,10 @@ class InstagramSeleniumBot(SeleniumBot):
             self.driver.implicitly_wait(1)
             self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
-            for possibles_xpaths in possible_profile_top_posts_xpaths:
-                self._comment_profile_post(profile, possibles_xpaths, comment)
+            for possibles_xpaths in self.possible_profile_top_posts_xpaths:
+                self.comment_profile_post(profile, possibles_xpaths, comment)
 
-    def _comment_profile_post(self, profile, possibles_xpaths, comment):
+    def comment_profile_post(self, profile, possibles_xpaths, comment):
         """
         """
         self.driver.implicitly_wait(randint(1, 2))
@@ -115,7 +115,10 @@ class InstagramSeleniumBot(SeleniumBot):
             except Exception as ex:
                 continue
 
-    def get_possible_profile_top_posts_xpaths(self, n_posts=3):
+    def follow():
+        print('on progress')
+
+    def get_possible_profile_top_posts_xpaths(self, n_posts=1):
         possible_profile_top_posts_xpaths = [] # List of lists
         for j in range(n_posts):
 

@@ -12,31 +12,39 @@ def cli():
     pass
 
 @click.command()
-@click.option('--action', '-a', default='comment', help='Action to be executed over this social media', required=True)
-@click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
-@click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
-def instagram(action, credentials_path, config_path):
+@click.option('--comment', '-c', default='This is a comment', help='Comment to be posted', required=False)
+@click.option('--follow', '-f', default='neymarjr', help='Profile to be followed', required=False)
+@click.option('--credentials-path', '-cred', default=vr.credentials_path, help='Credentials file path', required=False)
+@click.option('--config-path', '-conf', default=vr.config_path, help='Configuration file path', required=False)
+def instagram(comment, profile, credentials_path, config_path):
     """
-        Build decision tree.
+        Build instagram bot.
     """
     try:
         bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path)
         bot.login()
-        bot.comment_profiles_posts()
+        if comment is not None:
+            bot.comment_profiles_posts()
+        if follow is not None:
+            bot.follow(profile)
     except Exception as e:
         raise e
 
 @click.command()
-@click.option('--action', '-a', default='tweet', help='Action to be executed over this social media', required=True)
+@click.option('--tweet', '-t', default='This is a tweet', help='Message to be tweeted', required=False)
+@click.option('--follow', '-f', default='neymarjr', help='Profile to be followed', required=False)
 @click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
-def twitter(action, credentials_path, config_path):
+def twitter(tweet, profile, credentials_path, config_path):
     """
-        Build decision tree.
+        Build twitter bot.
     """
     try:
         bot = TwitterBot(credentials_path=credentials_path, config_path=config_path)
-        bot.tweet()
+        if tweet is not None:
+            bot.tweet(tweet)
+        if follow is not None:
+            bot.follow(profile)
     except Exception as e:
         raise e
 
