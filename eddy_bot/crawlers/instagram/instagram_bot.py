@@ -20,7 +20,7 @@ class InstagramSeleniumBot(SeleniumBot):
     comment_box = "/html/body/div[1]/section/main/section/div/form/textarea"
     post_button = "/html/body/div[1]/section/main/section/div/form/button"
 
-    def __init__(self, credentials_path, config_path):
+    def __init__(self, credentials_path: str, config_path: str):
         SeleniumBot.__init__(self, credentials_path, config_path)
         self.base_url = "https://instagram.com/"
         self.possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths()

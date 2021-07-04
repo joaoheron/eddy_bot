@@ -7,7 +7,7 @@ from eddy_bot.utils import pick_random_resource
 
 class TwitterBot(SocialMediaBot):
 
-    def __init__(self, credentials_path, config_path, timeout=30):
+    def __init__(self, credentials_path: str, config_path: str, timeout: int=30):
         SocialMediaBot.__init__(self, credentials_path, config_path)
         self.auth = tweepy.OAuthHandler(
             getenv('CONSUMER_API_KEY'),

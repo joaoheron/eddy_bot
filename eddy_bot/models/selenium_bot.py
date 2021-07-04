@@ -12,7 +12,7 @@ import eddy_bot.vars as vr
 
 class SeleniumBot(SocialMediaBot):
 
-    def __init__(self, credentials_path, config_path, browser='firefox', mobile=True, headless=False, timeout=30):
+    def __init__(self, credentials_path: str, config_path: str, browser: str='firefox', mobile: bool=True, headless: bool=False, timeout: str=30):
         SocialMediaBot.__init__(self, credentials_path, config_path)
         self.driver = (self.build_firefox_driver(mobile, headless, timeout) if browser == 'firefox' else self.build_chrome_driver(mobile, headless, timeout))
 
