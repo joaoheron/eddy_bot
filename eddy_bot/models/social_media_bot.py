@@ -1,10 +1,10 @@
-from dotenv import load_dotenv
+from abc import ABC
 
 from eddy_bot.utils import get_resource, get_credentials, get_yaml
 
-class SocialMediaBot():
+class SocialMediaBot(ABC):
 
-    def __init__(self, credentials_path, config_path, timeout=10):
+    def __init__(self, credentials_path: str, config_path: str, timeout: int=30):
         self.timeout = timeout
         self.username, self.password = get_credentials(credentials_path)
         self.config = get_yaml(config_path)
