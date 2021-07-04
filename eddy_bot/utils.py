@@ -19,3 +19,6 @@ def get_yaml(path):
 def pick_random_resource(resources):
     res = choice(resources)
     return res
+
+def get_comma_sepparated_values(values):
+    return [x.strip() for x in values.split(',')]

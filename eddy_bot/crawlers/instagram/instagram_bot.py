@@ -115,11 +115,11 @@ class InstagramSeleniumBot(SeleniumBot):
             except Exception as ex:
                 continue
 
-    def follow():
+    def follow(profile):
         print('on progress')
 
     def get_possible_profile_top_posts_xpaths(self, n_posts=1):
-        possible_profile_top_posts_xpaths = [] # List of lists
+        possible_profile_top_posts_xpaths = []
         for j in range(n_posts):
 
             posts_xpaths = []

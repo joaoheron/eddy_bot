@@ -1,6 +1,6 @@
 # Bin
-chromedriver_path  = 'eddy_bot/res/bin/chromedriver'
-geckodriver_path =  'eddy_bot/res/bin/geckodriver'
+chromedriver_path = 'eddy_bot/res/bin/chromedriver'
+geckodriver_path = 'eddy_bot/res/bin/geckodriver'
 
 # Downloads
 download_dir = 'eddy_bot/res/downloads/'

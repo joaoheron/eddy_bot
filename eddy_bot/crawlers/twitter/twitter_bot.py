@@ -1,4 +1,4 @@
-from os import getenv
+from os import getenv, path
 
 import tweepy
 
@@ -26,12 +26,16 @@ class TwitterBot(SocialMediaBot):
         except Exception as ex:
             raise ex("Error during authentication.")
 
-    def tweet(self, tweet=None):
+    def tweet(self, tweet: str=None):
         self.verify_credentials()
         try:
-            if tweet is None:
-                tweet = pick_random_resource(self.comments)
-            self.api.update_status(tweet)
+            if path.isfile(tweet):
+                self.api.media_upload(tweet)
+            else:
+                if tweet is None:
+                    tweet = pick_random_resource(self.comments)
+                self.api.update_status(tweet)
+
         except Exception as ex:
             raise ex
 

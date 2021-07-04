@@ -1,8 +1,8 @@
 """Console script for eddy_bot."""
-import os
 import sys
 import click
 import eddy_bot.vars as vr
+import eddy_bot.utils as ut
 
 from eddy_bot.crawlers.instagram.instagram_bot import InstagramSeleniumBot
 from eddy_bot.crawlers.twitter.twitter_bot import TwitterBot
@@ -13,15 +13,17 @@ def cli():
 
 @click.command()
 @click.option('--comment', '-c', default='This is a comment', help='Comment to be posted', required=False)
-@click.option('--follow', '-f', default='neymarjr', help='Profile to be followed', required=False)
+@click.option('--follow', '-f', help='Flag to follow profile', is_flag=True, required=False)
+@click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cred', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-conf', default=vr.config_path, help='Configuration file path', required=False)
-def instagram(comment, profile, credentials_path, config_path):
+def instagram(comment, follow, profile, credentials_path, config_path):
     """
         Build instagram bot.
     """
     try:
         bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path)
+        bot.profiles = (ut.get_comma_sepparated_values(profiles) if profile is not None else bot.profiles)
         bot.login()
         if comment is not None:
             bot.comment_profiles_posts()
