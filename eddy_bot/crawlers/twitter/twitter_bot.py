@@ -19,17 +19,22 @@ class TwitterBot(SocialMediaBot):
             getenv('ACCESS_TOKEN_SECRET')
         )
         self.api = tweepy.API(self.auth)
+    
+    def verify_credentials(function):
+        def verify(self, *args, **kwargs):
+            try:
+                logger.info("Verifying credentials...")
+                self.api.verify_credentials()
+                logger.info("Authentication OK.")
+            except Exception as ex:
+                raise ex("Error during authentication.")
 
-    def verify_credentials(self):
-        try:
-            logger.info("Verifying credentials...")
-            self.api.verify_credentials()
-            logger.info("Authentication OK.")
-        except Exception as ex:
-            raise ex("Error during authentication.")
+            function(self, *args, **kwargs)
 
+        return verify
+
+    @verify_credentials
     def tweet(self, tweet: str = None, mediapath: str = None):
-        self.verify_credentials()
         kmids = {}
         try:
             if tweet is None:
@@ -38,25 +43,28 @@ class TwitterBot(SocialMediaBot):
                 media = self.api.media_upload(mediapath)
                 kmids['media_ids'] = [media.media_id_string]
 
+            logger.info(f'Tweeting \" {tweet} \" ...')
             self.api.update_status(tweet, **kmids)
 
         except Exception as ex:
             raise ex
 
+    @verify_credentials
     def follow(self):
-        self.verify_credentials()
         try:
             for p in self.profiles:
+                logger.info(f'Following {p} ...')
                 self.api.create_friendship(p)
 
         except Exception as ex:
             raise ex
 
+    @verify_credentials
     def update_profile_description(self, description: str):
-        self.verify_credentials()
         try:
             if description is None:
                 description = pick_random_resource(self.descriptions)
+            logger.info(f'Updating profile with description \" {description} \"')    
             self.api.update_profile(description)
         except Exception as ex:
             raise ex
