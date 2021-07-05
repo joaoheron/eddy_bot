@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from eddy_bot.models.selenium_bot import SeleniumBot
 from eddy_bot.utils import pick_random_resource
+from eddy_bot.logger import logger
 
 class InstagramSeleniumBot(SeleniumBot):
     button_text_accept = "//button[text()='Accept']"
@@ -43,14 +44,14 @@ class InstagramSeleniumBot(SeleniumBot):
         self.driver.implicitly_wait(randint(1, 2))
 
         if self.check_exists_by_xpath(InstagramSeleniumBot.button_text_accept):
-            print("No cookies")
+            logger.info("No cookies")
         else:
             self.driver.find_element_by_xpath(InstagramSeleniumBot.button_text_accept).click()
-            print("Accepted cookies")
+            logger.info("Accepted cookies")
 
         self.driver.implicitly_wait(randint(1, 2))
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/div[3]/button[1]').click()
-        print("Logging in...")
+        logger.info("Logging in...")
         self.driver.implicitly_wait(randint(1, 2))
         username_field = self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[3]/div/label/input')
         username_field.send_keys(self.username)
@@ -115,7 +116,7 @@ class InstagramSeleniumBot(SeleniumBot):
 
     def follow(self):
         for p in self.profiles:
-            print(f'following profile {p}')
+            logger.info(f'following profile {p}')
 
     def get_possible_profile_top_posts_xpaths(self, n_posts=1):
         possible_profile_top_posts_xpaths = []
