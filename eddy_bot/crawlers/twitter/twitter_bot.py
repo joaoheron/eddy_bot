@@ -8,7 +8,7 @@ from eddy_bot.models.social_media_bot import SocialMediaBot
 
 class TwitterBot(SocialMediaBot):
 
-    def __init__(self, credentials_path: str, config_path: str, profiles: str, timeout: int=30):
+    def __init__(self, credentials_path: str, config_path: str, profiles: str, timeout: int = 30):
         SocialMediaBot.__init__(self, credentials_path, config_path, profiles)
         self.auth = tweepy.OAuthHandler(
             getenv('CONSUMER_API_KEY'),
@@ -28,7 +28,7 @@ class TwitterBot(SocialMediaBot):
         except Exception as ex:
             raise ex("Error during authentication.")
 
-    def tweet(self, tweet: str=None, mediapath: str=None):
+    def tweet(self, tweet: str = None, mediapath: str = None):
         self.verify_credentials()
         kmids = {}
         try:
@@ -43,18 +43,16 @@ class TwitterBot(SocialMediaBot):
         except Exception as ex:
             raise ex
 
-    def follow(self, profiles: str=None):
+    def follow(self):
         self.verify_credentials()
         try:
-            if profiles is not None and len(profiles) > 0:
-                self.profiles = profiles
             for p in self.profiles:
                 self.api.create_friendship(p)
 
         except Exception as ex:
             raise ex
 
-    def update_profile_description(self, description: str=None):
+    def update_profile_description(self, description: str):
         self.verify_credentials()
         try:
             if description is None:

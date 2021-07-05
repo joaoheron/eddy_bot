@@ -1,11 +1,11 @@
-from random import randint, choice
+from random import choice
 from yaml import load, FullLoader
 
 def get_credentials(path):
     with open(path, 'r') as f:
         tagsl = [line.strip() for line in f]
     return tagsl[0], tagsl[1]
-    
+
 def get_resource(path):
     with open(path, 'r') as f:
         resources = [line.strip() for line in f]

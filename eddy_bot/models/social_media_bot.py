@@ -2,11 +2,11 @@ from abc import ABC
 
 from dotenv import load_dotenv
 
-from eddy_bot.utils import get_resource, get_credentials, get_yaml, get_comma_sepparated_values
+from eddy_bot.utils import get_credentials, get_yaml, get_comma_sepparated_values
 
 class SocialMediaBot(ABC):
 
-    def __init__(self, credentials_path: str, config_path: str, profiles:str, timeout: int=30):
+    def __init__(self, credentials_path: str, config_path: str, profiles: str, timeout: int = 30):
         load_dotenv()
         self.timeout = timeout
         self.username, self.password = get_credentials(credentials_path)
