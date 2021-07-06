@@ -1,5 +1,4 @@
 """Console script for eddy_bot."""
-import os
 import sys
 import click
 import eddy_bot.vars as vr
@@ -12,39 +11,52 @@ def cli():
     pass
 
 @click.command()
-@click.option('--comment', '-c', default='This is a comment', help='Comment to be posted', required=False)
-@click.option('--follow', '-f', default='neymarjr', help='Profile to be followed', required=False)
+@click.option('--comment', '-c', default='This is a comments', help='Comment to be posted', required=False)
+@click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
+@click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
+@click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cred', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-conf', default=vr.config_path, help='Configuration file path', required=False)
-def instagram(comment, profile, credentials_path, config_path):
+def instagram(comment, follow, unfollow, profiles, credentials_path, config_path):
     """
         Build instagram bot.
     """
     try:
-        bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path)
+        bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path, profiles=profiles)
         bot.login()
         if comment is not None:
             bot.comment_profiles_posts()
         if follow is not None:
-            bot.follow(profile)
+            bot.follow()
+        if unfollow is not None:
+            bot.unfollow()
     except Exception as e:
         raise e
 
 @click.command()
-@click.option('--tweet', '-t', default='This is a tweet', help='Message to be tweeted', required=False)
-@click.option('--follow', '-f', default='neymarjr', help='Profile to be followed', required=False)
+@click.option('--tweet', '-t', help='Message to be tweeted', required=False)
+@click.option('--mediapath', '-m', help='Path of the file to be tweeted', required=False)
+@click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
+@click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
+@click.option('--bio-update', '-b', help='Message to update self profile description', required=False)
+@click.option('--picture-update', '-pu', help='Message to update self profile description', is_flag=True, required=False)
+@click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
-def twitter(tweet, profile, credentials_path, config_path):
+def twitter(tweet, mediapath, follow, unfollow, bio_update, picture_update, profiles, credentials_path, config_path):
     """
         Build twitter bot.
     """
     try:
-        bot = TwitterBot(credentials_path=credentials_path, config_path=config_path)
+        bot = TwitterBot(credentials_path=credentials_path, config_path=config_path, profiles=profiles)
         if tweet is not None:
-            bot.tweet(tweet)
+            bot.tweet(tweet, mediapath)
         if follow is not None:
-            bot.follow(profile)
+            bot.follow()
+        if unfollow is not None:
+            bot.unfollow()
+        if bio_update is not None or picture_update is not None:
+            bot.update_profile(bio_update, picture_update, mediapath)
     except Exception as e:
         raise e
 

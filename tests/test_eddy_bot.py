@@ -6,9 +6,7 @@
 import unittest
 from click.testing import CliRunner
 
-from eddy_bot import eddy_bot
 from eddy_bot import cli
-
 
 class TestEddy_bot(unittest.TestCase):
     """Tests for `eddy_bot` package."""

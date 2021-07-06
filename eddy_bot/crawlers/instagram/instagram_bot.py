@@ -2,12 +2,11 @@ from random import randint
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 
 from eddy_bot.models.selenium_bot import SeleniumBot
 from eddy_bot.utils import pick_random_resource
+from eddy_bot.logger import logger
 
 class InstagramSeleniumBot(SeleniumBot):
     button_text_accept = "//button[text()='Accept']"
@@ -20,8 +19,8 @@ class InstagramSeleniumBot(SeleniumBot):
     comment_box = "/html/body/div[1]/section/main/section/div/form/textarea"
     post_button = "/html/body/div[1]/section/main/section/div/form/button"
 
-    def __init__(self, credentials_path, config_path):
-        SeleniumBot.__init__(self, credentials_path, config_path)
+    def __init__(self, credentials_path: str, config_path: str, profiles: str):
+        SeleniumBot.__init__(self, credentials_path, config_path, profiles)
         self.base_url = "https://instagram.com/"
         self.possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths()
 
@@ -34,10 +33,10 @@ class InstagramSeleniumBot(SeleniumBot):
     # def comment_tag(like=True)
     # def comment_post()
 
-    # def follow_profile
+    # def follow
     # def follow_profile_followers(n_followers)
     # def follow_profile_following(n_following)
-    
+
     # def send_message_to_profile()
 
     def login(self):
@@ -45,14 +44,14 @@ class InstagramSeleniumBot(SeleniumBot):
         self.driver.implicitly_wait(randint(1, 2))
 
         if self.check_exists_by_xpath(InstagramSeleniumBot.button_text_accept):
-            print("No cookies")
+            logger.info("No cookies")
         else:
             self.driver.find_element_by_xpath(InstagramSeleniumBot.button_text_accept).click()
-            print("Accepted cookies")
+            logger.info("Accepted cookies")
 
         self.driver.implicitly_wait(randint(1, 2))
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/div[3]/button[1]').click()
-        print("Logging in...")
+        logger.info("Logging in...")
         self.driver.implicitly_wait(randint(1, 2))
         username_field = self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[3]/div/label/input')
         username_field.send_keys(self.username)
@@ -66,7 +65,7 @@ class InstagramSeleniumBot(SeleniumBot):
 
         self.driver.find_element_by_xpath('/html/body/div[1]/section/main/article/div/div/div/form/div[1]/div[6]/button').click()
         self.driver.implicitly_wait(randint(1, 2))
-    
+
     def comment_profiles_posts(self, n_posts=3):
         """
         """
@@ -89,7 +88,7 @@ class InstagramSeleniumBot(SeleniumBot):
                 ele = self.driver.find_element_by_xpath(xp)
                 if ele is None:
                     continue
-                
+
                 ele.click()
                 self.driver.implicitly_wait(randint(1, 2))
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 600)")
@@ -112,14 +111,19 @@ class InstagramSeleniumBot(SeleniumBot):
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
                 break
-            except Exception as ex:
+            except Exception:
                 continue
 
-    def follow():
-        print('on progress')
+    def follow(self):
+        for p in self.profiles:
+            logger.info(f'Following profile {p}')
+
+    def unfollow(self):
+        for p in self.profiles:
+            logger.info(f'Unfollowing profile {p}')
 
     def get_possible_profile_top_posts_xpaths(self, n_posts=1):
-        possible_profile_top_posts_xpaths = [] # List of lists
+        possible_profile_top_posts_xpaths = []
         for j in range(n_posts):
 
             posts_xpaths = []
@@ -127,5 +131,5 @@ class InstagramSeleniumBot(SeleniumBot):
                 posts_xpaths.append(f'{xpath}[{str(j + 1)}]/a/div/div[2]')
 
             possible_profile_top_posts_xpaths.append(posts_xpaths)
-            
+
         return possible_profile_top_posts_xpaths
