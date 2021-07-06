@@ -19,7 +19,7 @@ class TwitterBot(SocialMediaBot):
             getenv('ACCESS_TOKEN_SECRET')
         )
         self.api = tweepy.API(self.auth)
-    
+
     def verify_credentials(function):
         def verify(self, *args, **kwargs):
             try:
@@ -43,7 +43,7 @@ class TwitterBot(SocialMediaBot):
                 media = self.api.media_upload(mediapath)
                 kmids['media_ids'] = [media.media_id_string]
 
-            logger.info(f'Tweeting \" {tweet} \" ...')
+            logger.info(f'Tweeting \"{tweet}\" ...')
             self.api.update_status(tweet, **kmids)
 
         except Exception as ex:
@@ -53,7 +53,7 @@ class TwitterBot(SocialMediaBot):
     def follow(self):
         try:
             for p in self.profiles:
-                logger.info(f'Following {p} ...')
+                logger.info(f'Following @{p} ...')
                 self.api.create_friendship(p)
 
         except Exception as ex:
@@ -63,7 +63,7 @@ class TwitterBot(SocialMediaBot):
     def unfollow(self):
         try:
             for p in self.profiles:
-                logger.info(f'Unfollowing {p} ...')
+                logger.info(f'Unfollowing @{p} ...')
                 self.api.destroy_friendship(p)
 
         except Exception as ex:
@@ -74,7 +74,7 @@ class TwitterBot(SocialMediaBot):
         try:
             if description is None:
                 description = pick_random_resource(self.descriptions)
-            logger.info(f'Updating profile with description \" {description} \"')    
+            logger.info(f'Updating profile with description \"{description}\"')
             self.api.update_profile(description)
         except Exception as ex:
             raise ex

@@ -17,7 +17,7 @@ def cli():
 @click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cred', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-conf', default=vr.config_path, help='Configuration file path', required=False)
-def instagram(comment, follow, profiles, credentials_path, config_path):
+def instagram(comment, follow, unfollow, profiles, credentials_path, config_path):
     """
         Build instagram bot.
     """
@@ -25,9 +25,11 @@ def instagram(comment, follow, profiles, credentials_path, config_path):
         bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path, profiles=profiles)
         bot.login()
         if comment is not None:
-            bot.comment_profiles_posts(profiles)
+            bot.comment_profiles_posts()
         if follow is not None:
             bot.follow()
+        if unfollow is not None:
+            bot.unfollow()
     except Exception as e:
         raise e
 
@@ -36,10 +38,11 @@ def instagram(comment, follow, profiles, credentials_path, config_path):
 @click.option('--mediapath', '-m', help='Path of the file to be tweeted', required=False)
 @click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
 @click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
+@click.option('--bio-update', '-b', help='Message to update self profile description', required=False)
 @click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
-def twitter(tweet, mediapath, follow, profiles, credentials_path, config_path):
+def twitter(tweet, mediapath, follow, unfollow, bio_update, profiles, credentials_path, config_path):
     """
         Build twitter bot.
     """
@@ -51,6 +54,8 @@ def twitter(tweet, mediapath, follow, profiles, credentials_path, config_path):
             bot.follow()
         if unfollow is not None:
             bot.unfollow()
+        if bio_update is not None:
+            bot.update_profile_description()
     except Exception as e:
         raise e
 

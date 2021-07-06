@@ -33,7 +33,7 @@ class InstagramSeleniumBot(SeleniumBot):
     # def comment_tag(like=True)
     # def comment_post()
 
-    # def follow_profile
+    # def follow
     # def follow_profile_followers(n_followers)
     # def follow_profile_following(n_following)
 
