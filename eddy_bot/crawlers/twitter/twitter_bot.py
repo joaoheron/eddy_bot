@@ -60,6 +60,16 @@ class TwitterBot(SocialMediaBot):
             raise ex
 
     @verify_credentials
+    def unfollow(self):
+        try:
+            for p in self.profiles:
+                logger.info(f'Unfollowing {p} ...')
+                self.api.destroy_friendship(p)
+
+        except Exception as ex:
+            raise ex
+
+    @verify_credentials
     def update_profile_description(self, description: str):
         try:
             if description is None:

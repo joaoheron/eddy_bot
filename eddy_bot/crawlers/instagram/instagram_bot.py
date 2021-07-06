@@ -116,7 +116,11 @@ class InstagramSeleniumBot(SeleniumBot):
 
     def follow(self):
         for p in self.profiles:
-            logger.info(f'following profile {p}')
+            logger.info(f'Following profile {p}')
+
+    def unfollow(self):
+        for p in self.profiles:
+            logger.info(f'Unfollowing profile {p}')
 
     def get_possible_profile_top_posts_xpaths(self, n_posts=1):
         possible_profile_top_posts_xpaths = []

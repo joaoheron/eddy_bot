@@ -11,8 +11,9 @@ def cli():
     pass
 
 @click.command()
-@click.option('--comment', '-c', default='This is a comment', help='Comment to be posted', required=False)
-@click.option('--follow', '-f', help='Flag to follow profile', is_flag=True, required=False)
+@click.option('--comment', '-c', default='This is a comments', help='Comment to be posted', required=False)
+@click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
+@click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
 @click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cred', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-conf', default=vr.config_path, help='Configuration file path', required=False)
@@ -33,7 +34,8 @@ def instagram(comment, follow, profiles, credentials_path, config_path):
 @click.command()
 @click.option('--tweet', '-t', help='Message to be tweeted', required=False)
 @click.option('--mediapath', '-m', help='Path of the file to be tweeted', required=False)
-@click.option('--follow', '-f', help='Flag to follow profile', is_flag=True, required=False)
+@click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
+@click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
 @click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
 @click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
@@ -47,6 +49,8 @@ def twitter(tweet, mediapath, follow, profiles, credentials_path, config_path):
             bot.tweet(tweet, mediapath)
         if follow is not None:
             bot.follow()
+        if unfollow is not None:
+            bot.unfollow()
     except Exception as e:
         raise e
 
