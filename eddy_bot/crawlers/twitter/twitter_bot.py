@@ -34,22 +34,6 @@ class TwitterBot(SocialMediaBot):
         return verify
 
     @verify_credentials
-    def tweet(self, tweet: str = None, mediapath: str = None):
-        kmids = {}
-        try:
-            if tweet is None:
-                tweet = pick_random_resource(self.comments)
-            if path.isfile(mediapath):
-                media = self.api.media_upload(mediapath)
-                kmids['media_ids'] = [media.media_id_string]
-
-            logger.info(f'Tweeting \"{tweet}\" ...')
-            self.api.update_status(tweet, **kmids)
-
-        except Exception as ex:
-            raise ex
-
-    @verify_credentials
     def follow(self):
         try:
             for p in self.profiles:
@@ -70,11 +54,34 @@ class TwitterBot(SocialMediaBot):
             raise ex
 
     @verify_credentials
-    def update_profile_description(self, description: str):
+    def tweet(self, tweet: str, mediapath: str):
+        kmids = {}
         try:
-            if description is None:
-                description = pick_random_resource(self.descriptions)
-            logger.info(f'Updating profile with description \"{description}\"')
-            self.api.update_profile(description)
+            if tweet is None:
+                tweet = pick_random_resource(self.comments)
+            if path.isfile(mediapath):
+                media = self.api.media_upload(mediapath)
+                kmids['media_ids'] = [media.media_id_string]
+
+            logger.info(f'Tweeting \"{tweet}\" ...')
+            self.api.update_status(tweet, **kmids)
+
+        except Exception as ex:
+            raise ex
+
+    @verify_credentials
+    def update_profile(self, description: str, picture_update: str, mediapath: str):
+        kmids = {}
+        try:
+            if description is not None:
+                logger.info(f'Updating profile with description \"{description}\"')
+                self.api.update_profile(description)
+                logger.info('Profile description updated.')
+
+            if path.isfile(mediapath) and picture_update:
+                logger.info(f'Updating profile picture ... ')
+                self.api.update_profile_image(mediapath)
+                logger.info('Profile picture updated.')
+
         except Exception as ex:
             raise ex
