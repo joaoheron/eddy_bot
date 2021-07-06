@@ -71,7 +71,6 @@ class TwitterBot(SocialMediaBot):
 
     @verify_credentials
     def update_profile(self, description: str, picture_update: str, mediapath: str):
-        kmids = {}
         try:
             if description is not None:
                 logger.info(f'Updating profile with description \"{description}\"')
