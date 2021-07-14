@@ -1,6 +1,7 @@
-from os import getenv, path
+from os import getenv, path, environ
 
 import tweepy
+import numpy as np
 
 from eddy_bot.logger import logger
 from eddy_bot.utils import pick_random_resource
@@ -8,8 +9,9 @@ from eddy_bot.models.social_media_bot import SocialMediaBot
 
 class TwitterBot(SocialMediaBot):
 
-    def __init__(self, credentials_path: str, config_path: str, profiles: str, timeout: int = 30):
-        SocialMediaBot.__init__(self, credentials_path, config_path, profiles)
+    def __init__(self, config_path: str, profiles: str, timeout: int = 30):
+        SocialMediaBot.__init__(self, config_path, profiles)
+        self.validate_env_vars(['CONSUMER_API_KEY', 'CONSUMER_API_SECRET_KEY', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET'])
         self.auth = tweepy.OAuthHandler(
             getenv('CONSUMER_API_KEY'),
             getenv('CONSUMER_API_SECRET_KEY')
@@ -20,11 +22,11 @@ class TwitterBot(SocialMediaBot):
         )
         self.api = tweepy.API(self.auth)
 
-    def verify_credentials(function):
+    def verify_authentication(function):
         def verify(self, *args, **kwargs):
             try:
                 logger.info("Verifying credentials...")
-                self.api.verify_credentials()
+                self.api.verify_authentication()
                 logger.info("Authentication OK.")
             except Exception as ex:
                 raise ex("Error during authentication.")
@@ -33,27 +35,25 @@ class TwitterBot(SocialMediaBot):
 
         return verify
 
-    @verify_credentials
+    @verify_authentication
     def follow(self):
         try:
             for p in self.profiles:
                 logger.info(f'Following @{p} ...')
                 self.api.create_friendship(p)
-
         except Exception as ex:
             raise ex
 
-    @verify_credentials
+    @verify_authentication
     def unfollow(self):
         try:
             for p in self.profiles:
                 logger.info(f'Unfollowing @{p} ...')
                 self.api.destroy_friendship(p)
-
         except Exception as ex:
             raise ex
 
-    @verify_credentials
+    @verify_authentication
     def tweet(self, tweet: str, mediapath: str):
         kmids = {}
         try:
@@ -69,7 +69,7 @@ class TwitterBot(SocialMediaBot):
         except Exception as ex:
             raise ex
 
-    @verify_credentials
+    @verify_authentication
     def update_profile(self, description: str, picture_update: str, mediapath: str):
         try:
             if description is not None:
