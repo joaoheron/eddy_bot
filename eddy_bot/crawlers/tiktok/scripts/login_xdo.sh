@@ -1,4 +1,5 @@
 #!/bin/bash
+# login_xdo.sh - Script logs in TikTok using environment variables TIKTOK_USER and TIKTOK_PASSWORD
 login_method="cellphone/email/google/facebook/twitter"
 url="https://www.tiktok.com/"
 
@@ -31,9 +32,9 @@ xdotool mousemove 900 380
 xdotool click 1
 
 # Fill login information
-xte "str $TIKTOKER_USERNAME"
+xte "str $TIKTOK_USER"
 xte "key Tab"
-xte "str $TIKTOKER_PASSWORD"
+xte "str $TIKTOK_PASSWORD"
 sleep 2
 
 # Click on Log In button
