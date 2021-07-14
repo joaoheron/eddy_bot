@@ -15,14 +15,13 @@ def cli():
 @click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
 @click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
 @click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
-@click.option('--credentials-path', '-cred', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-conf', default=vr.config_path, help='Configuration file path', required=False)
-def instagram(comment, follow, unfollow, profiles, credentials_path, config_path):
+def instagram(comment, follow, unfollow, profiles, config_path):
     """
         Build instagram bot.
     """
     try:
-        bot = InstagramSeleniumBot(credentials_path=credentials_path, config_path=config_path, profiles=profiles)
+        bot = InstagramSeleniumBot(config_path=config_path, profiles=profiles)
         bot.login()
         if comment is not None:
             bot.comment_profiles_posts()
@@ -41,14 +40,13 @@ def instagram(comment, follow, unfollow, profiles, credentials_path, config_path
 @click.option('--bio-update', '-b', help='Message to update self profile description', required=False)
 @click.option('--picture-update', '-pu', help='Message to update self profile description', is_flag=True, required=False)
 @click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
-@click.option('--credentials-path', '-cr', default=vr.credentials_path, help='Credentials file path', required=False)
 @click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
-def twitter(tweet, mediapath, follow, unfollow, bio_update, picture_update, profiles, credentials_path, config_path):
+def twitter(tweet, mediapath, follow, unfollow, bio_update, picture_update, profiles, config_path):
     """
         Build twitter bot.
     """
     try:
-        bot = TwitterBot(credentials_path=credentials_path, config_path=config_path, profiles=profiles)
+        bot = TwitterBot(config_path=config_path, profiles=profiles)
         if tweet is not None:
             bot.tweet(tweet, mediapath)
         if follow is not None:
