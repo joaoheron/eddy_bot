@@ -12,7 +12,7 @@ window_id=$(wmctrl -l | awk '/Google Chrome/ {print strtonum($1)}')
 xdotool windowsize $window_id 100% 100%
 sleep 3
 
-# Click on Log In buttonlildobinho  Tiktoker22!
+# Click on Log In button
 xdotool mousemove 1400 100
 xdotool click 1
 sleep 3

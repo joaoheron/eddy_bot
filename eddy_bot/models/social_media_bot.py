@@ -17,7 +17,7 @@ class SocialMediaBot(ABC):
         self.comments = self.config.get('comments')
         self.descriptions = self.config.get('descriptions')
 
-    def validate_env_vars(self, essential_vars):
+    def validate_env_vars(self, essential_vars: list):
         missing_vars = np.setdiff1d(essential_vars, environ)
         if missing_vars:
             raise Exception(f'Missing variables: {missing_vars}. Please export all the needed environment variables.')
