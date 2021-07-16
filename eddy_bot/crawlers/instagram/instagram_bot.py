@@ -10,6 +10,9 @@ from eddy_bot.utils import pick_random_resource
 from eddy_bot.logger import logger
 
 class InstagramSeleniumBot(SeleniumBot):
+    """
+        Instagram selenium bot class
+    """
     button_text_accept = "//button[text()='Accept']"
     possible_base_profile_top_posts = [
         "/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div",
@@ -22,24 +25,9 @@ class InstagramSeleniumBot(SeleniumBot):
 
     def __init__(self, config_path: str, profiles: str):
         SeleniumBot.__init__(self, config_path, profiles)
-        self.validate_env_vars(['INSTAGRAM_USER', 'INSTAGRAM_PASS'])
+        InstagramSeleniumBot.validate_environment(['INSTAGRAM_USER', 'INSTAGRAM_PASS'])
         self.base_url = "https://instagram.com/"
         self.possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths()
-
-    # TODO
-    # def like_tag_post()
-    # def like_profile_post()
-    # def like_post()
-
-    # def comment_profile_post(like=True) # profile no singular
-    # def comment_tag(like=True)
-    # def comment_post()
-
-    # def follow
-    # def follow_profile_followers(n_followers)
-    # def follow_profile_following(n_following)
-
-    # def send_message_to_profile()
 
     def login(self):
         self.driver.get(self.base_url)

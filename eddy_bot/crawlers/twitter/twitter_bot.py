@@ -8,10 +8,12 @@ from eddy_bot.utils import pick_random_resource
 from eddy_bot.models.social_media_bot import SocialMediaBot
 
 class TwitterBot(SocialMediaBot):
-
+    """
+        Twitter tweepy api bot class
+    """
     def __init__(self, config_path: str, profiles: str, timeout: int = 30):
         SocialMediaBot.__init__(self, config_path, profiles)
-        self.validate_env_vars(['CONSUMER_API_KEY', 'CONSUMER_API_SECRET_KEY', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET'])
+        TwitterBot.validate_environment(['CONSUMER_API_KEY', 'CONSUMER_API_SECRET_KEY', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET'])
         self.auth = tweepy.OAuthHandler(
             getenv('CONSUMER_API_KEY'),
             getenv('CONSUMER_API_SECRET_KEY')

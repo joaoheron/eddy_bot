@@ -33,9 +33,11 @@ xdotool click 1
 
 # Fill login information
 xte "str $TIKTOK_USER"
+sleep 1
 xte "key Tab"
+sleep 1
 xte "str $TIKTOK_PASSWORD"
-sleep 2
+sleep 1
 
 # Click on Log In button
 xdotool mousemove 900 550
