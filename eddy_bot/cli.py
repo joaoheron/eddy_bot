@@ -3,8 +3,9 @@ import sys
 import click
 import eddy_bot.vars as vr
 
-from eddy_bot.crawlers.instagram.instagram_bot import InstagramSeleniumBot
+from eddy_bot.crawlers.tiktok.tiktok_bot import TiktokBot
 from eddy_bot.crawlers.twitter.twitter_bot import TwitterBot
+from eddy_bot.crawlers.instagram.instagram_bot import InstagramSeleniumBot
 
 @click.group()
 def cli():
@@ -27,7 +28,7 @@ def instagram(comment, follow, unfollow, profiles, config_path):
             bot.comment_profiles_posts()
         if follow is not None:
             bot.follow()
-        if unfollow is not None:
+        elif unfollow is not None:
             bot.unfollow()
     except Exception as e:
         raise e
@@ -49,17 +50,37 @@ def twitter(tweet, mediapath, follow, unfollow, bio_update, picture_update, prof
         bot = TwitterBot(config_path=config_path, profiles=profiles)
         if tweet is not None:
             bot.tweet(tweet, mediapath)
-        if follow is not None:
-            bot.follow()
-        if unfollow is not None:
-            bot.unfollow()
         if bio_update is not None or picture_update is not None:
             bot.update_profile(bio_update, picture_update, mediapath)
+        if follow is not None:
+            bot.follow()
+        elif unfollow is not None:
+            bot.unfollow()
+    except Exception as e:
+        raise e
+
+@click.command()
+@click.option('--follow', '-f', help='Flag to follow profiles', is_flag=True, required=False)
+@click.option('--unfollow', '-u', help='Flag to unfollow profiles', is_flag=True, required=False)
+@click.option('--profiles', '-p', default='instagram', help='Profiles to perform the actions over, sepparated by commas(,)', required=False)
+@click.option('--config-path', '-c', default=vr.config_path, help='Configuration file path', required=False)
+def tiktok(follow, unfollow, profiles, config_path):
+    """
+        Build tiktok bot.
+    """
+    try:
+        bot = TiktokBot(config_path=config_path, profiles=profiles)
+        bot.login()
+        if follow is not None:
+            bot.follow()
+        elif unfollow is not None:
+            bot.unfollow()
     except Exception as e:
         raise e
 
 cli.add_command(instagram)
 cli.add_command(twitter)
+cli.add_command(tiktok)
 
 if __name__ == "__main__":
     sys.exit(cli()) # pragma: no cover
