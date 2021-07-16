@@ -7,7 +7,9 @@ from dotenv import load_dotenv
 from eddy_bot.utils import get_credentials, get_yaml, get_comma_sepparated_values
 
 class SocialMediaBot(ABC):
-
+    """
+        Social media bot abstract class
+    """
     def __init__(self, config_path: str, profiles: str, timeout: int = 30):
         load_dotenv()
         self.timeout = timeout
@@ -17,7 +19,8 @@ class SocialMediaBot(ABC):
         self.comments = self.config.get('comments')
         self.descriptions = self.config.get('descriptions')
 
-    def validate_env_vars(self, essential_vars: list):
+    @staticmethod
+    def validate_environment(essential_vars: list):
         missing_vars = np.setdiff1d(essential_vars, environ)
         if missing_vars:
             raise Exception(f'Missing variables: {missing_vars}. Please export all the needed environment variables.')
