@@ -19,7 +19,8 @@ requirements = [
     'flake8>=3.7.8',
     'numpy>=1.21.0',
     'pyaml>=20.4.0',
-    'Sphinx>=4.1.1'
+    'Sphinx>=4.1.1',
+    'twine>=3.4.1'
  ]
 
 setup_requirements = [ ]
@@ -40,7 +41,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
+    description="Eddy Bot is a command line interface to interact with social media. Currently supports Twitter, TikTok and Instagram.",
     entry_points={
         'console_scripts': [
             'eddy_bot=eddy_bot.cli:cli',
