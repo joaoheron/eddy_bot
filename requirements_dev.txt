@@ -6,3 +6,4 @@ tweepy>=3.10.0
 flake8>=3.7.8
 numpy>=1.21.0
 pyaml>=20.4.0
+Sphinx>=4.1.1

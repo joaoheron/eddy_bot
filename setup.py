@@ -10,7 +10,17 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', ]
+requirements = [
+    'pip==21.1.3',
+    'python-dotenv>=0.17.0',
+    'Click>=7.0',
+    'selenium>=3.141.0',
+    'tweepy>=3.10.0',
+    'flake8>=3.7.8',
+    'numpy>=1.21.0',
+    'pyaml>=20.4.0',
+    'Sphinx>=4.1.1'
+ ]
 
 setup_requirements = [ ]
 
