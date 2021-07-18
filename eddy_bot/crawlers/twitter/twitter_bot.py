@@ -13,7 +13,7 @@ class TwitterBot(SocialMediaBot):
     """
     def __init__(self, config_path: str, profiles: str, timeout: int = 30):
         SocialMediaBot.__init__(self, config_path, profiles)
-        TwitterBot.validate_environment(['CONSUMER_API_KEY', 'CONSUMER_API_SECRET_KEY', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET'])
+        SocialMediaBot.validate_environment(['CONSUMER_API_KEY', 'CONSUMER_API_SECRET_KEY', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET'])
         self.auth = tweepy.OAuthHandler(
             getenv('CONSUMER_API_KEY'),
             getenv('CONSUMER_API_SECRET_KEY')
@@ -44,7 +44,7 @@ class TwitterBot(SocialMediaBot):
                 logger.info(f'Following @{p} ...')
                 self.api.create_friendship(p)
         except Exception as ex:
-            raise ex
+            raise ex('Error during following user.')
 
     @verify_authentication
     def unfollow(self):
@@ -53,7 +53,7 @@ class TwitterBot(SocialMediaBot):
                 logger.info(f'Unfollowing @{p} ...')
                 self.api.destroy_friendship(p)
         except Exception as ex:
-            raise ex
+            raise ex('Error during unfollowing user.')
 
     @verify_authentication
     def tweet(self, tweet: str, mediapath: str):
@@ -69,7 +69,7 @@ class TwitterBot(SocialMediaBot):
             self.api.update_status(tweet, **kmids)
 
         except Exception as ex:
-            raise ex
+            raise ex('Error during tweeting.')
 
     @verify_authentication
     def update_profile(self, description: str, picture_update: str, mediapath: str):
@@ -85,4 +85,4 @@ class TwitterBot(SocialMediaBot):
                 logger.info('Profile picture updated.')
 
         except Exception as ex:
-            raise ex
+            raise ex('Error during updating profile picture.')

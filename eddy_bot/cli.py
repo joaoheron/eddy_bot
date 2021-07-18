@@ -52,9 +52,9 @@ def twitter(tweet, mediapath, follow, unfollow, bio_update, picture_update, prof
             bot.tweet(tweet, mediapath)
         if bio_update is not None or picture_update is not None:
             bot.update_profile(bio_update, picture_update, mediapath)
-        if follow is not None:
+        if follow:
             bot.follow()
-        if unfollow is not None:
+        if unfollow:
             bot.unfollow()
     except Exception as e:
         raise e
@@ -70,9 +70,9 @@ def tiktok(follow, unfollow, profiles, config_path):
     """
     try:
         bot = TiktokBot(config_path=config_path, profiles=profiles)
-        if follow is not None:
+        if follow:
             bot.follow()
-        if unfollow is not None:
+        if unfollow:
             bot.unfollow()
     except Exception as e:
         raise e

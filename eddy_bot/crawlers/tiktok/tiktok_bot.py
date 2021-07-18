@@ -14,7 +14,7 @@ class TiktokBot(SocialMediaBot):
 
     def __init__(self, config_path: str, profiles: str, timeout: int = 30):
         SocialMediaBot.__init__(self, config_path, profiles)
-        TiktokBot.validate_environment(['TIKTOK_USER', 'TIKTOK_PASS'])
+        SocialMediaBot.validate_environment(['TIKTOK_USER', 'TIKTOK_PASS'])
 
     def login(function):
         def login_tiktok(self, *args, **kwargs):
@@ -22,7 +22,7 @@ class TiktokBot(SocialMediaBot):
                 logger.info(f'Logging in...')
                 system(f'sh {TiktokBot.scripts_folder}/login_xdo.sh')
             except Exception as ex:
-                raise ex
+                raise ex('Error during logging in Tiktok.')
 
             function(self, *args, **kwargs)
 
@@ -32,7 +32,7 @@ class TiktokBot(SocialMediaBot):
         try:
             system(f'sh {TiktokBot.scripts_folder}/close_chrome_xdo.sh')
         except Exception as ex:
-            raise ex
+            raise ex('Error during closing browser.')
 
     @login
     def follow(self):
@@ -41,7 +41,7 @@ class TiktokBot(SocialMediaBot):
                 logger.info(f'Following @{p} ...')
                 system(f'sh {TiktokBot.scripts_folder}/follow_xdo.sh {p}')
         except Exception as ex:
-            raise ex
+            raise ex('Error during following user.')
         finally:
             self._close()
 
@@ -50,8 +50,8 @@ class TiktokBot(SocialMediaBot):
         try:
             for p in self.profiles:
                 logger.info(f'Unfollowing @{p} ...')
-                system(f'sh {TiktokBot.scripts_folder}/unfollow_xdo.sh')
+                system(f'sh {TiktokBot.scripts_folder}/unfollow_xdo.sh {p}')
         except Exception as ex:
-            raise ex
+            raise ex('Error during unfollowing user.')
         finally:
             self._close()
