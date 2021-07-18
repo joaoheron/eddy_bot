@@ -35,7 +35,7 @@ Installing package
 #. Make sure you've created a `Python Virtual Environment`_ and you're using it.
 #. Install this package using command line:
 ```
-        pip install eddy-bot
+pip install eddy-bot
 ```
 
 Features
