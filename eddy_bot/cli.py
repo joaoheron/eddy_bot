@@ -28,7 +28,7 @@ def instagram(comment, follow, unfollow, profiles, config_path):
             bot.comment_profiles_posts()
         if follow is not None:
             bot.follow()
-        elif unfollow is not None:
+        if unfollow is not None:
             bot.unfollow()
     except Exception as e:
         raise e
@@ -54,7 +54,7 @@ def twitter(tweet, mediapath, follow, unfollow, bio_update, picture_update, prof
             bot.update_profile(bio_update, picture_update, mediapath)
         if follow is not None:
             bot.follow()
-        elif unfollow is not None:
+        if unfollow is not None:
             bot.unfollow()
     except Exception as e:
         raise e
@@ -70,10 +70,9 @@ def tiktok(follow, unfollow, profiles, config_path):
     """
     try:
         bot = TiktokBot(config_path=config_path, profiles=profiles)
-        bot.login()
         if follow is not None:
             bot.follow()
-        elif unfollow is not None:
+        if unfollow is not None:
             bot.unfollow()
     except Exception as e:
         raise e
