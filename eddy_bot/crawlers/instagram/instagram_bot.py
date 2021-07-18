@@ -13,6 +13,7 @@ class InstagramSeleniumBot(SeleniumBot):
     """
         Instagram selenium bot class
     """
+    base_url = "https://instagram.com/"
     button_text_accept = "//button[text()='Accept']"
     possible_base_profile_top_posts = [
         "/html/body/div[1]/section/main/div/div[2]/article/div[1]/div/div[1]/div",
@@ -25,12 +26,11 @@ class InstagramSeleniumBot(SeleniumBot):
 
     def __init__(self, config_path: str, profiles: str):
         SeleniumBot.__init__(self, config_path, profiles)
-        InstagramSeleniumBot.validate_environment(['INSTAGRAM_USER', 'INSTAGRAM_PASS'])
-        self.base_url = "https://instagram.com/"
+        SeleniumBot.validate_environment(['INSTAGRAM_USER', 'INSTAGRAM_PASS'])
         self.possible_profile_top_posts_xpaths = self.get_possible_profile_top_posts_xpaths()
 
     def login(self):
-        self.driver.get(self.base_url)
+        self.driver.get(InstagramSeleniumBot.base_url)
         self.driver.implicitly_wait(randint(1, 2))
 
         if self.check_exists_by_xpath(InstagramSeleniumBot.button_text_accept):
@@ -62,7 +62,7 @@ class InstagramSeleniumBot(SeleniumBot):
         for profile in self.profiles:
             comment = pick_random_resource(self.comments)
 
-            self.driver.get(self.base_url + profile)
+            self.driver.get(InstagramSeleniumBot.base_url + profile)
             self.driver.implicitly_wait(1)
             self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 
@@ -96,7 +96,7 @@ class InstagramSeleniumBot(SeleniumBot):
                 post_button.click()
                 self.driver.implicitly_wait(randint(1, 2))
 
-                self.driver.get(self.base_url + profile)
+                self.driver.get(InstagramSeleniumBot.base_url + profile)
                 self.driver.implicitly_wait(randint(1, 2))
                 self.driver.execute_script("window.scrollTo(0, window.scrollY + 300)")
 

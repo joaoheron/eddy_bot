@@ -1,6 +1,6 @@
 #!/bin/bash
 # login_xdo.sh - Script logs in TikTok using environment variables TIKTOK_USER and TIKTOK_PASS
-login_method="cellphone/email/google/facebook/twitter"
+
 url="https://www.tiktok.com/"
 
 # Open browser and set focus

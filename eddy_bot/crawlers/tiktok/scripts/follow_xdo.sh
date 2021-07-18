@@ -1,5 +1,6 @@
 #!/bin/bash
 # follow_xdo.sh - Script follows @user on TikTok
+
 url="https://www.tiktok.com/@$1"
 
 google-chrome $url -incognito & 
