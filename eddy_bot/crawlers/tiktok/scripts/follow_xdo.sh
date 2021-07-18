@@ -1,6 +1,13 @@
 #!/bin/bash
-# login_xdo.sh - Script logs in TikTok using environment variables TIKTOK_USER and TIKTOK_PASSWORD
-for var in "$@"
-do
-    echo "$var"
-done
+# follow_xdo.sh - Script follows @user on TikTok
+url="https://www.tiktok.com/@$1"
+
+google-chrome $url -incognito & 
+sleep 3
+
+# Click on Follow button
+xdotool mousemove 1150 265
+xdotool click 1
+sleep 3
+
+xdotool key Ctrl+w
