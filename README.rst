@@ -13,12 +13,10 @@ Eddy Bot
         :target: https://eddy-bot.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
-
 Eddy Bot is a command line interface to interact with social media. Currently supports Twitter, TikTok and Instagram.
 
 * Free software: Apache Software License 2.0
 * Documentation: https://eddy-bot.readthedocs.io.
-
 
 Configuring
 -------------------------------
@@ -34,6 +32,7 @@ Installing package
 -------------------------------
 #. Make sure you've created a `Python Virtual Environment`_ and you're using it.
 #. Install this package using command line:
+
 ```
 pip install eddy-bot
 ```
@@ -44,27 +43,27 @@ Features
 Twitter
 **********************
 
-* Tweet message:
+Tweet message:
 ```
 eddy_bot --tweet "Your message"
 ```
 
-* Tweet message with media:
+Tweet message with media:
 ```
 eddy_bot --tweet "Your message" --mediapath /path/to/file.jpg
 ```
 
-* Follow profile:
+Follow profile:
 ```
 eddy_bot twitter --follow "profile1,profile2"
 ```
 
-* Unfollow profile:
+Unfollow profile:
 ```
 eddy_bot twitter --unfollow "profile1,profile2"
 ```
 
-* Update self profile description:
+Update self profile description:
 ```
 eddy_bot twitter --bio-update "My new profile description"
 ```
@@ -72,12 +71,12 @@ eddy_bot twitter --bio-update "My new profile description"
 Tiktok 
 **********************
 
-* Follow profiles:
+Follow profiles:
 ```
 eddy_bot tiktok --follow "profile1,profile2"
 ```
 
-* Unfollow profiles:
+Unfollow profiles:
 ```
 eddy_bot tiktok --unfollow "profile1,profile2"
 ```
@@ -85,12 +84,14 @@ eddy_bot tiktok --unfollow "profile1,profile2"
 Instagram 
 **********************
 
-* Comment profile post:
+Comment profile post:
+
 ```
 eddy_bot instagram comment "Profile to comment on post"
 ```
 
-* Follow profiles:
+Follow profiles:
+
 ```
 eddy_bot instagram "profile1,profile2"
 ```
