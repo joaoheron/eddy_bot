@@ -10,29 +10,48 @@ class TiktokBot(SocialMediaBot):
     """
         TiktokBot xdotool bot class
     """
+    scripts_folder = 'eddy_bot/crawlers/tiktok/scripts'
+
     def __init__(self, config_path: str, profiles: str, timeout: int = 30):
         SocialMediaBot.__init__(self, config_path, profiles)
         TiktokBot.validate_environment(['TIKTOK_USER', 'TIKTOK_PASS'])
 
-    def login(self):
+    def login(function):
+        def login_tiktok(self, *args, **kwargs):
+            try:
+                logger.info(f'Logging in...')
+                system(f'sh {TiktokBot.scripts_folder}/login_xdo.sh')
+            except Exception as ex:
+                raise ex
+
+            function(self, *args, **kwargs)
+
+        return login_tiktok
+
+    def _close(self):
         try:
-            logger.info(f'Logging in...')
-            system(f'sh {pathlib.Path(__file__).parent.resolve()}/scripts/login_xdo.sh')
+            system(f'sh {TiktokBot.scripts_folder}/close_chrome_xdo.sh')
         except Exception as ex:
             raise ex
 
+    @login
     def follow(self):
         try:
             for p in self.profiles:
                 logger.info(f'Following @{p} ...')
-                system(f'sh {pathlib.Path(__file__).parent.resolve()}/scripts/follow_xdo.sh')
+                system(f'sh {TiktokBot.scripts_folder}/follow_xdo.sh {p}')
         except Exception as ex:
             raise ex
+        finally:
+            self._close()
 
+    @login
     def unfollow(self):
         try:
             for p in self.profiles:
                 logger.info(f'Unfollowing @{p} ...')
-                system(f'sh {pathlib.Path(__file__).parent.resolve()}/scripts/unfollow_xdo.sh')
+                system(f'sh {TiktokBot.scripts_folder}/unfollow_xdo.sh')
         except Exception as ex:
             raise ex
+        finally:
+            self._close()
