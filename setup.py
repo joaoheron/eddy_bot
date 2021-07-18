@@ -11,7 +11,8 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'pip==21.1.3',
+    'pip>=20.0.2',
+    'cryptography>=3.4.7',
     'python-dotenv>=0.17.0',
     'Click>=7.0',
     'selenium>=3.141.0',
