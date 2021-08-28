@@ -1,10 +1,10 @@
 from os import environ
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import numpy as np
 from dotenv import load_dotenv
 
-from eddy_bot.utils import get_credentials, get_yaml, get_comma_sepparated_values
+from eddy_bot.utils import get_yaml, get_comma_sepparated_values
 
 class SocialMediaBot(ABC):
     """
