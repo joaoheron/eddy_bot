@@ -22,8 +22,6 @@ jobs:
         python-version: 3.9
     - name: Configure environment
       run: |
-        pwd
-        ls -la
         sh scripts/create_linter_profile.sh
     - name: Install dependencies
       run: |
