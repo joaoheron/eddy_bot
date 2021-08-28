@@ -1,7 +1,6 @@
-from os import getenv, path, environ
+from os import getenv, path
 
 import tweepy
-import numpy as np
 
 from eddy_bot.logger import logger
 from eddy_bot.utils import pick_random_resource
@@ -80,7 +79,7 @@ class TwitterBot(SocialMediaBot):
                 logger.info('Profile description updated.')
 
             if path.isfile(mediapath) and picture_update:
-                logger.info(f'Updating profile picture ... ')
+                logger.info('Updating profile picture ... ')
                 self.api.update_profile_image(mediapath)
                 logger.info('Profile picture updated.')
 

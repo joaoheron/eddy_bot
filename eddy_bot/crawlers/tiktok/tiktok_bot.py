@@ -1,7 +1,4 @@
-import pathlib
-from os import getenv, path, system
-
-import numpy as np
+from os import system
 
 from eddy_bot.logger import logger
 from eddy_bot.models.social_media_bot import SocialMediaBot
@@ -19,7 +16,7 @@ class TiktokBot(SocialMediaBot):
     def login(function):
         def login_tiktok(self, *args, **kwargs):
             try:
-                logger.info(f'Logging in...')
+                logger.info('Logging in...')
                 system(f'sh {TiktokBot.scripts_folder}/login_xdo.sh')
             except Exception as ex:
                 raise ex('Error during logging in Tiktok.')
