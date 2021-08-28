@@ -44,42 +44,51 @@ Twitter
 **********************
 
 Tweet message:
+
 ```
 eddy_bot --tweet "Your message"
 ```
 
 Tweet message with media:
+
 ```
 eddy_bot --tweet "Your message" --mediapath /path/to/file.jpg
 ```
 
 Follow profile:
+
 ```
 eddy_bot twitter --follow "profile1,profile2"
 ```
 
 Unfollow profile:
+
 ```
 eddy_bot twitter --unfollow "profile1,profile2"
 ```
 
 Update self profile description:
+
 ```
 eddy_bot twitter --bio-update "My new profile description"
 ```
+
 
 Tiktok 
 **********************
 
 Follow profiles:
+
 ```
 eddy_bot tiktok --follow "profile1,profile2"
 ```
 
 Unfollow profiles:
+
 ```
 eddy_bot tiktok --unfollow "profile1,profile2"
 ```
+
 
 Instagram 
 **********************
