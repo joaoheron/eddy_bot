@@ -25,12 +25,12 @@ If you intend to interact with Tiktok and Instagram, you won't need any further 
 The Tiktok crawler is implemented using xdotool_ and the Instagram crawler is implemented using Selenium_ so you'll just need to set your credentials according to the file .env.example.
 If you intend to interact with Twitter as well, you'll need first to apply for api usage on `Twitter Developer Platform`_ and then you'll get all the keys you need to export, according to the file .env.example.
 
-#. Create a file named .env inside the root folder your repository, then copy the content from the file .env.example and paste it into file .env.
-#. Replace the values "xxx" with your credentials inside .env file.
+#. Create a file named .env inside the root folder of your repository, then copy the content from the file .env.example and paste it into file .env.
+#. Replace the values "xxx" with your credentials.
 
 Installing package
 -------------------------------
-#. Make sure you've created a `Python Virtual Environment`_ and you're using it.
+#. Make sure you've created a `Python Virtual Environment`_ and it's activated.
 #. Install this package using command line:
 
 ```
@@ -55,13 +55,13 @@ Tweet message with media:
 eddy_bot --tweet "Your message" --mediapath /path/to/file.jpg
 ```
 
-Follow profile:
+Follow profiles:
 
 ```
 eddy_bot twitter --follow "profile1,profile2"
 ```
 
-Unfollow profile:
+Unfollow profiles:
 
 ```
 eddy_bot twitter --unfollow "profile1,profile2"
@@ -93,16 +93,16 @@ eddy_bot tiktok --unfollow "profile1,profile2"
 Instagram 
 **********************
 
-Comment profile post:
+Comment profiles posts:
 
 ```
-eddy_bot instagram comment "Profile to comment on post"
+eddy_bot instagram --profiles "profile1,profile2" --comment "This is a comment" 
 ```
 
 Follow profiles:
 
 ```
-eddy_bot instagram "profile1,profile2"
+eddy_bot instagram --follow "profile1,profile2"
 ```
 
 .. _xdotool: http://manpages.ubuntu.com/manpages/trusty/man1/xdotool.1.html
