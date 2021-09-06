@@ -13,7 +13,7 @@ Eddy Bot
         :target: https://eddy-bot.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
-Eddy Bot is a command line interface to interact with social media. Currently supports Twitter, TikTok and Instagram.
+Eddy Bot is an open source command line interface for interacting with social media. Currently supports Twitter, TikTok and Instagram.
 
 * Free software: Apache Software License 2.0
 * Documentation: https://eddy-bot.readthedocs.io.
